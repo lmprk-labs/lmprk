@@ -3,3 +3,6 @@
 //! The core crate exposes the building blocks for constructing and consuming
 //! Solana light-client proofs: slot snapshots, merkle inclusion paths, and the
 //! aggregate state proof that wraps them.
+
+#![deny(missing_docs)]
+#![cfg_attr(not(test), forbid(unsafe_code))]
