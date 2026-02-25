@@ -18,3 +18,6 @@ pub use hash::{hash_leaf, hash_node, Hash};
 pub use merkle::{MerklePath, MerkleStep};
 pub use proof::{StateProof, StateProofBuilder};
 pub use slot::{SlotInfo, SlotSnapshot};
+
+/// The protocol version that proofs and snapshots are tagged with.
+pub const PROTOCOL_VERSION: u16 = 1;
