@@ -12,3 +12,9 @@ pub mod hash;
 pub mod merkle;
 pub mod proof;
 pub mod slot;
+
+pub use error::{LmprkError, Result};
+pub use hash::{hash_leaf, hash_node, Hash};
+pub use merkle::{MerklePath, MerkleStep};
+pub use proof::{StateProof, StateProofBuilder};
+pub use slot::{SlotInfo, SlotSnapshot};
