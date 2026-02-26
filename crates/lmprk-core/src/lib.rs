@@ -24,3 +24,14 @@ pub const PROTOCOL_VERSION: u16 = 1;
 
 /// Stable string identifier for the protocol, used in transport layers.
 pub const PROTOCOL_NAME: &str = "lmprk/v1";
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn protocol_constants_are_stable() {
+        assert_eq!(PROTOCOL_VERSION, 1);
+        assert_eq!(PROTOCOL_NAME, "lmprk/v1");
+    }
+}
