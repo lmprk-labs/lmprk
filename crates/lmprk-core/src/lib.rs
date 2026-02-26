@@ -21,3 +21,6 @@ pub use slot::{SlotInfo, SlotSnapshot};
 
 /// The protocol version that proofs and snapshots are tagged with.
 pub const PROTOCOL_VERSION: u16 = 1;
+
+/// Stable string identifier for the protocol, used in transport layers.
+pub const PROTOCOL_NAME: &str = "lmprk/v1";
