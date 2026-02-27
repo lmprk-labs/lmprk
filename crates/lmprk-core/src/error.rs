@@ -37,3 +37,15 @@ pub enum LmprkError {
         /// Last slot in the window.
         window_end: u64,
     },
+
+    /// Encountered a malformed proof payload.
+    #[error("malformed proof: {0}")]
+    Malformed(&'static str),
+
+    /// IO error while reading or writing proof data.
+    #[error("io: {0}")]
+    Io(#[from] std::io::Error),
+}
+
+/// Convenient alias used throughout the crate.
+pub type Result<T> = std::result::Result<T, LmprkError>;
