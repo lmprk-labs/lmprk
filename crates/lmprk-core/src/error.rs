@@ -22,3 +22,18 @@ pub enum LmprkError {
         /// Minimum required for the threshold.
         need: usize,
     },
+
+    /// A signature failed verification against its signer's public key.
+    #[error("invalid signature for signer {0}")]
+    InvalidSignature(String),
+
+    /// A slot number was outside the snapshot window.
+    #[error("slot {slot} is outside the snapshot window {window_start}..={window_end}")]
+    SlotOutsideWindow {
+        /// The slot the caller supplied.
+        slot: u64,
+        /// First slot in the window.
+        window_start: u64,
+        /// Last slot in the window.
+        window_end: u64,
+    },
