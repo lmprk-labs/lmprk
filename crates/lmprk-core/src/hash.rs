@@ -49,3 +49,16 @@ pub fn hash_leaf(bytes: &[u8]) -> Hash {
     hasher.update(bytes);
     Hash(*hasher.finalize().as_bytes())
 }
+
+/// Combine two child hashes into a parent hash with the node domain separator.
+pub fn hash_node(left: &Hash, right: &Hash) -> Hash {
+    let mut hasher = blake3::Hasher::new();
+    hasher.update(NODE_DOMAIN);
+    hasher.update(&left.0);
+    hasher.update(&right.0);
+    Hash(*hasher.finalize().as_bytes())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
