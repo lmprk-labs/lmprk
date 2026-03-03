@@ -38,3 +38,14 @@ impl std::fmt::Display for Hash {
         f.write_str(&self.to_hex())
     }
 }
+
+const LEAF_DOMAIN: &[u8] = b"lmprk:leaf:v1";
+const NODE_DOMAIN: &[u8] = b"lmprk:node:v1";
+
+/// Hash a leaf payload with the leaf domain separator.
+pub fn hash_leaf(bytes: &[u8]) -> Hash {
+    let mut hasher = blake3::Hasher::new();
+    hasher.update(LEAF_DOMAIN);
+    hasher.update(bytes);
+    Hash(*hasher.finalize().as_bytes())
+}
