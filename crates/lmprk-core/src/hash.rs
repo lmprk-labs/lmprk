@@ -15,3 +15,14 @@ impl Hash {
     pub const fn from_bytes(bytes: [u8; 32]) -> Self {
         Self(bytes)
     }
+
+    /// View as a slice.
+    pub fn as_bytes(&self) -> &[u8; 32] {
+        &self.0
+    }
+
+    /// Hex-encoded form.
+    pub fn to_hex(&self) -> String {
+        hex::encode(self.0)
+    }
+}
