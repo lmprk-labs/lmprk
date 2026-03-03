@@ -26,3 +26,15 @@ impl Hash {
         hex::encode(self.0)
     }
 }
+
+impl std::fmt::Debug for Hash {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "Hash({})", self.to_hex())
+    }
+}
+
+impl std::fmt::Display for Hash {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(&self.to_hex())
+    }
+}
