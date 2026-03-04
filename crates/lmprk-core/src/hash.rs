@@ -62,3 +62,25 @@ pub fn hash_node(left: &Hash, right: &Hash) -> Hash {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn leaf_is_deterministic() {
+        let a = hash_leaf(b"hello");
+        let b = hash_leaf(b"hello");
+        assert_eq!(a, b);
+    }
+
+    #[test]
+    fn leaf_differs_from_node() {
+        let a = hash_leaf(b"x");
+        let b = hash_node(&a, &a);
+        assert_ne!(a, b);
+    }
+
+    #[test]
+    fn hex_round_trips() {
+        let h = hash_leaf(b"abc");
+        let hex = h.to_hex();
+        assert_eq!(hex.len(), 64);
+    }
+}
