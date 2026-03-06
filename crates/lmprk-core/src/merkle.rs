@@ -36,3 +36,16 @@ impl MerkleStep {
         }
     }
 }
+
+/// A complete merkle inclusion proof from a leaf to a root.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct MerklePath {
+    /// The ordered steps from leaf upward.
+    pub steps: Vec<MerkleStep>,
+}
+
+impl MerklePath {
+    /// An empty path, used for single-leaf trees.
+    pub fn empty() -> Self {
+        Self { steps: Vec::new() }
+    }
