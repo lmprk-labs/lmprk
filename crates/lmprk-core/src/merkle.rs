@@ -49,3 +49,17 @@ impl MerklePath {
     pub fn empty() -> Self {
         Self { steps: Vec::new() }
     }
+
+    /// Number of levels above the leaf.
+    pub fn depth(&self) -> usize {
+        self.steps.len()
+    }
+
+    /// Recompute the root, starting from the given leaf hash.
+    pub fn compute_root(&self, leaf: &Hash) -> Hash {
+        let mut acc = *leaf;
+        for step in &self.steps {
+            acc = step.fold(&acc);
+        }
+        acc
+    }
