@@ -82,3 +82,35 @@ impl MerklePath {
 mod tests {
     use super::*;
     use crate::hash::hash_leaf;
+
+    #[test]
+    fn empty_path_returns_leaf() {
+        let leaf = hash_leaf(b"only");
+        let path = MerklePath::empty();
+        assert_eq!(path.compute_root(&leaf), leaf);
+    }
+
+    #[test]
+    fn two_step_path_round_trips() {
+        let leaf = hash_leaf(b"target");
+        let sib_a = hash_leaf(b"sib_a");
+        let sib_b = hash_leaf(b"sib_b");
+        let mid = hash_node(&leaf, &sib_a);
+        let root = hash_node(&sib_b, &mid);
+        let path = MerklePath {
+            steps: vec![
+                MerkleStep { sibling: sib_a, side: Side::Right },
+                MerkleStep { sibling: sib_b, side: Side::Left },
+            ],
+        };
+        path.verify(&leaf, &root).expect("valid path");
+    }
+
+    #[test]
+    fn root_mismatch_is_caught() {
+        let leaf = hash_leaf(b"x");
+        let bad_root = hash_leaf(b"y");
+        let path = MerklePath::empty();
+        assert!(path.verify(&leaf, &bad_root).is_err());
+    }
+}
