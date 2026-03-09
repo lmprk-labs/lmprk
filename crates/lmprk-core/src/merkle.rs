@@ -63,3 +63,22 @@ impl MerklePath {
         }
         acc
     }
+
+    /// Verify the path against an expected root.
+    pub fn verify(&self, leaf: &Hash, root: &Hash) -> Result<()> {
+        let actual = self.compute_root(leaf);
+        if &actual == root {
+            Ok(())
+        } else {
+            Err(LmprkError::MerkleRootMismatch {
+                expected: root.to_hex(),
+                actual: actual.to_hex(),
+            })
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::hash::hash_leaf;
