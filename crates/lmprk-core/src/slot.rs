@@ -50,3 +50,10 @@ impl SlotSnapshot {
         (start, head)
     }
 }
+
+/// How many slots before `head` are considered part of the snapshot window.
+pub const WINDOW_RADIUS: u64 = 32;
+
+#[cfg(test)]
+mod tests {
+    use super::*;
