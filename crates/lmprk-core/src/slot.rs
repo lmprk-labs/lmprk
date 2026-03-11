@@ -36,3 +36,17 @@ pub struct SlotSnapshot {
     /// The minimum signatures required to consider a slot finalized.
     pub threshold: usize,
 }
+
+impl SlotSnapshot {
+    /// Returns true when the snapshot has reached the configured threshold.
+    pub fn is_finalized(&self) -> bool {
+        self.head.signer_count >= self.threshold
+    }
+
+    /// The slot range this snapshot is valid for.
+    pub fn window(&self) -> (u64, u64) {
+        let head = self.head.slot;
+        let start = head.saturating_sub(WINDOW_RADIUS);
+        (start, head)
+    }
+}
