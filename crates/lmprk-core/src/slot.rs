@@ -57,3 +57,36 @@ pub const WINDOW_RADIUS: u64 = 32;
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn fake_snapshot(slot: u64, signers: usize, threshold: usize) -> SlotSnapshot {
+        SlotSnapshot {
+            head: SlotInfo {
+                slot,
+                blockhash: Hash([0u8; 32]),
+                parent_slot: slot.saturating_sub(1),
+                signer_count: signers,
+            },
+            state_root: Hash([0u8; 32]),
+            validator_set_size: 128,
+            threshold,
+        }
+    }
+
+    #[test]
+    fn finalized_when_above_threshold() {
+        let s = fake_snapshot(1000, 90, 86);
+        assert!(s.is_finalized());
+    }
+
+    #[test]
+    fn not_finalized_when_below_threshold() {
+        let s = fake_snapshot(1000, 50, 86);
+        assert!(!s.is_finalized());
+    }
+
+    #[test]
+    fn window_respects_radius() {
+        let s = fake_snapshot(1000, 90, 86);
+        assert_eq!(s.window(), (968, 1000));
+    }
+}
