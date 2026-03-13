@@ -24,3 +24,25 @@ pub struct StateProof {
     /// Merkle path from the account leaf to `snapshot.state_root`.
     pub path: MerklePath,
 }
+
+impl StateProof {
+    /// Verify the proof against its embedded snapshot root.
+    pub fn verify(&self) -> Result<()> {
+        if self.protocol != PROTOCOL_NAME || self.version != PROTOCOL_VERSION {
+            return Err(LmprkError::Malformed("protocol mismatch"));
+        }
+        if !self.snapshot.is_finalized() {
+            return Err(LmprkError::InsufficientSignatures {
+                have: self.snapshot.head.signer_count,
+                need: self.snapshot.threshold,
+            });
+        }
+        let leaf = hash_leaf(&self.account_data);
+        self.path.verify(&leaf, &self.snapshot.state_root)
+    }
+
+    /// Best-effort byte size estimate, useful for diagnostics.
+    pub fn byte_size(&self) -> usize {
+        8 + 96 + self.account_data.len() + self.path.steps.len() * 33
+    }
+}
