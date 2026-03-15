@@ -46,3 +46,18 @@ impl StateProof {
         8 + 96 + self.account_data.len() + self.path.steps.len() * 33
     }
 }
+
+/// Builder for `StateProof`. Convenient when assembling a proof in stages.
+#[derive(Debug, Default)]
+pub struct StateProofBuilder {
+    snapshot: Option<SlotSnapshot>,
+    address: Option<String>,
+    account_data: Option<Vec<u8>>,
+    path: Option<MerklePath>,
+}
+
+impl StateProofBuilder {
+    /// Start a fresh builder.
+    pub fn new() -> Self {
+        Self::default()
+    }
