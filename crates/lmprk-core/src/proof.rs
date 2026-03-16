@@ -61,3 +61,15 @@ impl StateProofBuilder {
     pub fn new() -> Self {
         Self::default()
     }
+
+    /// Attach the slot snapshot.
+    pub fn snapshot(mut self, snapshot: SlotSnapshot) -> Self {
+        self.snapshot = Some(snapshot);
+        self
+    }
+
+    /// Set the account address (base58).
+    pub fn address(mut self, address: impl Into<String>) -> Self {
+        self.address = Some(address.into());
+        self
+    }
