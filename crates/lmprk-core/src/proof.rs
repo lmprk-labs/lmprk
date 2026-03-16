@@ -73,3 +73,15 @@ impl StateProofBuilder {
         self.address = Some(address.into());
         self
     }
+
+    /// Set the raw account data.
+    pub fn account_data(mut self, data: Vec<u8>) -> Self {
+        self.account_data = Some(data);
+        self
+    }
+
+    /// Attach the merkle inclusion path.
+    pub fn path(mut self, path: MerklePath) -> Self {
+        self.path = Some(path);
+        self
+    }
