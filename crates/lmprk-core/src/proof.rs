@@ -85,3 +85,29 @@ impl StateProofBuilder {
         self.path = Some(path);
         self
     }
+
+    /// Finalize into a `StateProof`. Returns an error if any required field is missing.
+    pub fn build(self) -> Result<StateProof> {
+        let snapshot = self.snapshot.ok_or(LmprkError::Malformed("snapshot missing"))?;
+        let address = self.address.ok_or(LmprkError::Malformed("address missing"))?;
+        let account_data = self
+            .account_data
+            .ok_or(LmprkError::Malformed("account_data missing"))?;
+        let path = self.path.unwrap_or_else(MerklePath::empty);
+        Ok(StateProof {
+            protocol: PROTOCOL_NAME.to_string(),
+            version: PROTOCOL_VERSION,
+            snapshot,
+            address,
+            account_data,
+            path,
+        })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::hash::{hash_leaf, hash_node};
+    use crate::merkle::{MerkleStep, Side};
+    use crate::slot::SlotInfo;
