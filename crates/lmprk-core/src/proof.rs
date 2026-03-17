@@ -111,3 +111,43 @@ mod tests {
     use crate::hash::{hash_leaf, hash_node};
     use crate::merkle::{MerkleStep, Side};
     use crate::slot::SlotInfo;
+
+    fn snap(root: Hash) -> SlotSnapshot {
+        SlotSnapshot {
+            head: SlotInfo {
+                slot: 1000,
+                blockhash: Hash([0u8; 32]),
+                parent_slot: 999,
+                signer_count: 100,
+            },
+            state_root: root,
+            validator_set_size: 128,
+            threshold: 86,
+        }
+    }
+
+    #[test]
+    fn proof_round_trips() {
+        let data = b"some-account-data".to_vec();
+        let leaf = hash_leaf(&data);
+        let sibling = hash_leaf(b"sibling");
+        let root = hash_node(&leaf, &sibling);
+        let path = MerklePath {
+            steps: vec![MerkleStep { sibling, side: Side::Right }],
+        };
+        let proof = StateProofBuilder::new()
+            .snapshot(snap(root))
+            .address("So11111111111111111111111111111111111111112")
+            .account_data(data)
+            .path(path)
+            .build()
+            .expect("builds");
+        proof.verify().expect("verifies");
+    }
+
+    #[test]
+    fn missing_field_is_rejected() {
+        let err = StateProofBuilder::new().build().unwrap_err();
+        assert!(matches!(err, LmprkError::Malformed(_)));
+    }
+}
