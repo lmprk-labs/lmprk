@@ -6,3 +6,6 @@
 
 #![deny(missing_docs)]
 #![forbid(unsafe_code)]
+
+pub mod aggregation;
+pub mod ed25519;
