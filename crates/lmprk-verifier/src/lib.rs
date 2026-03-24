@@ -9,3 +9,6 @@
 
 pub mod aggregation;
 pub mod ed25519;
+
+pub use aggregation::{AggregateProof, SignatureBundle, SignatureSet, VerifierConfig};
+pub use ed25519::{verify_signature, SignerKey};
