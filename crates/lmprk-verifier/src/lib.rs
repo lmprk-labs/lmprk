@@ -12,3 +12,6 @@ pub mod ed25519;
 
 pub use aggregation::{AggregateProof, SignatureBundle, SignatureSet, VerifierConfig};
 pub use ed25519::{verify_signature, SignerKey};
+
+/// Domain tag mixed into every commitment the verifier signs over.
+pub const VERIFIER_DOMAIN: &[u8] = b"lmprk:verifier:v1";
