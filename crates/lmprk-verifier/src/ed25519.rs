@@ -43,3 +43,31 @@ pub fn verify_signature(key: &SignerKey, message: &[u8], signature: &[u8]) -> Re
         .verify(message, &sig)
         .map_err(|_| LmprkError::InvalidSignature(key.label.clone()))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use ed25519_dalek::{Signer, SigningKey};
+    use rand_core::OsRng;
+
+    #[test]
+    fn signature_round_trips() {
+        let signing = SigningKey::generate(&mut OsRng);
+        let verifying = signing.verifying_key();
+        let label = bs58::encode(verifying.to_bytes()).into_string();
+        let key = SignerKey::from_base58(&label, &label).expect("parses");
+        let msg = b"slot-commitment";
+        let sig = signing.sign(msg);
+        verify_signature(&key, msg, &sig.to_bytes()).expect("verifies");
+    }
+
+    #[test]
+    fn malformed_signature_is_rejected() {
+        let signing = SigningKey::generate(&mut OsRng);
+        let verifying = signing.verifying_key();
+        let label = bs58::encode(verifying.to_bytes()).into_string();
+        let key = SignerKey::from_base58(&label, &label).expect("parses");
+        let bad = [0u8; 32];
+        assert!(verify_signature(&key, b"x", &bad).is_err());
+    }
+}
