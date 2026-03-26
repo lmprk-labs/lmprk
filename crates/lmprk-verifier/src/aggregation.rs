@@ -22,3 +22,19 @@ impl VerifierConfig {
         Self { signers, threshold: t }
     }
 }
+
+/// A single (signer_index, signature) pair.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SignatureBundle {
+    /// Index into the configured signer set.
+    pub signer_index: u32,
+    /// Raw 64-byte Ed25519 signature.
+    pub signature: Vec<u8>,
+}
+
+/// A collection of signature bundles for the same message.
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct SignatureSet {
+    /// All collected bundles.
+    pub bundles: Vec<SignatureBundle>,
+}
