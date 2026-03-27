@@ -38,3 +38,14 @@ pub struct SignatureSet {
     /// All collected bundles.
     pub bundles: Vec<SignatureBundle>,
 }
+
+impl SignatureSet {
+    /// Append a bundle to the set.
+    pub fn push(&mut self, bundle: SignatureBundle) {
+        self.bundles.push(bundle);
+    }
+
+    /// Number of collected bundles (not de-duplicated).
+    pub fn len(&self) -> usize {
+        self.bundles.len()
+    }
