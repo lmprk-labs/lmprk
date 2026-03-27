@@ -64,3 +64,39 @@ pub struct AggregateProof {
     /// Signatures collected so far.
     pub signatures: SignatureSet,
 }
+
+impl AggregateProof {
+    /// Verify the aggregate proof against a verifier configuration.
+    ///
+    /// Returns `Ok(valid_count)` when the threshold is reached, otherwise the
+    /// corresponding `LmprkError` variant.
+    pub fn verify(&self, config: &VerifierConfig) -> Result<usize> {
+        let mut valid = 0usize;
+        let mut seen = vec![false; config.signers.len()];
+        for bundle in &self.signatures.bundles {
+            let idx = bundle.signer_index as usize;
+            if idx >= config.signers.len() || seen[idx] {
+                continue;
+            }
+            let signer = &config.signers[idx];
+            if verify_signature(signer, &self.message, &bundle.signature).is_ok() {
+                seen[idx] = true;
+                valid += 1;
+            }
+        }
+        if valid >= config.threshold {
+            Ok(valid)
+        } else {
+            Err(LmprkError::InsufficientSignatures {
+                have: valid,
+                need: config.threshold,
+            })
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use ed25519_dalek::{Signer, SigningKey};
+    use rand_core::OsRng;
