@@ -49,3 +49,18 @@ impl SignatureSet {
     pub fn len(&self) -> usize {
         self.bundles.len()
     }
+
+    /// True when no bundles have been collected.
+    pub fn is_empty(&self) -> bool {
+        self.bundles.is_empty()
+    }
+}
+
+/// The aggregate proof a verifier consumes: the message plus the signature set.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct AggregateProof {
+    /// The commitment bytes that every signer signed over.
+    pub message: Vec<u8>,
+    /// Signatures collected so far.
+    pub signatures: SignatureSet,
+}
