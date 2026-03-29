@@ -100,3 +100,53 @@ mod tests {
     use super::*;
     use ed25519_dalek::{Signer, SigningKey};
     use rand_core::OsRng;
+
+    fn make_signer() -> (SignerKey, SigningKey) {
+        let signing = SigningKey::generate(&mut OsRng);
+        let verifying = signing.verifying_key();
+        let label = bs58::encode(verifying.to_bytes()).into_string();
+        (SignerKey::from_base58(&label, &label).expect("parses"), signing)
+    }
+
+    #[test]
+    fn threshold_three_of_three() {
+        let mut signers = Vec::new();
+        let mut keys = Vec::new();
+        for _ in 0..3 {
+            let (s, k) = make_signer();
+            signers.push(s);
+            keys.push(k);
+        }
+        let config = VerifierConfig::new(signers, 3);
+        let msg = b"slot-commitment".to_vec();
+        let mut set = SignatureSet::default();
+        for (i, k) in keys.iter().enumerate() {
+            set.push(SignatureBundle {
+                signer_index: i as u32,
+                signature: k.sign(&msg).to_bytes().to_vec(),
+            });
+        }
+        let proof = AggregateProof { message: msg, signatures: set };
+        assert_eq!(proof.verify(&config).expect("verifies"), 3);
+    }
+
+    #[test]
+    fn below_threshold_is_rejected() {
+        let mut signers = Vec::new();
+        let mut keys = Vec::new();
+        for _ in 0..3 {
+            let (s, k) = make_signer();
+            signers.push(s);
+            keys.push(k);
+        }
+        let config = VerifierConfig::new(signers, 3);
+        let msg = b"slot-commitment".to_vec();
+        let mut set = SignatureSet::default();
+        set.push(SignatureBundle {
+            signer_index: 0,
+            signature: keys[0].sign(&msg).to_bytes().to_vec(),
+        });
+        let proof = AggregateProof { message: msg, signatures: set };
+        assert!(proof.verify(&config).is_err());
+    }
+}
