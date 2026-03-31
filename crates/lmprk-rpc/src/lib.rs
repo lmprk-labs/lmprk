@@ -2,3 +2,7 @@
 
 #![deny(missing_docs)]
 #![forbid(unsafe_code)]
+
+pub mod client;
+
+pub use client::{RpcClient, RpcEndpoint, RpcError};
