@@ -51,3 +51,17 @@ impl RpcEndpoint {
             backoff: Duration::from_millis(250),
         }
     }
+
+    /// Mark this endpoint as having failed; doubles the backoff up to 30s.
+    pub fn note_failure(&mut self) {
+        self.consecutive_failures = self.consecutive_failures.saturating_add(1);
+        let doubled = self.backoff.saturating_mul(2);
+        let cap = Duration::from_secs(30);
+        self.backoff = if doubled > cap { cap } else { doubled };
+    }
+
+    /// Mark this endpoint as healthy; resets the backoff.
+    pub fn note_success(&mut self) {
+        self.consecutive_failures = 0;
+        self.backoff = Duration::from_millis(250);
+    }
