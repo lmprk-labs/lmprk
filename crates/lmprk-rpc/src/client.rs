@@ -78,3 +78,14 @@ pub struct RpcClient {
     endpoints: Vec<RpcEndpoint>,
     cursor: usize,
 }
+
+impl RpcClient {
+    /// Construct from a list of endpoints.
+    pub fn new(endpoints: Vec<RpcEndpoint>) -> Self {
+        Self { endpoints, cursor: 0 }
+    }
+
+    /// Number of registered endpoints.
+    pub fn len(&self) -> usize {
+        self.endpoints.len()
+    }
