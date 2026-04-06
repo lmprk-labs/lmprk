@@ -27,3 +27,27 @@ pub enum RpcError {
     #[error("malformed response from {0}")]
     Malformed(String),
 }
+
+/// An RPC endpoint plus its current health bookkeeping.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct RpcEndpoint {
+    /// Endpoint URL (no API key embedded; keys belong on the server only).
+    pub url: String,
+    /// A short human label.
+    pub label: String,
+    /// Number of consecutive failures.
+    pub consecutive_failures: u32,
+    /// Minimum backoff before retrying after a failure.
+    pub backoff: Duration,
+}
+
+impl RpcEndpoint {
+    /// Construct a fresh endpoint with zero failures.
+    pub fn new(url: impl Into<String>, label: impl Into<String>) -> Self {
+        Self {
+            url: url.into(),
+            label: label.into(),
+            consecutive_failures: 0,
+            backoff: Duration::from_millis(250),
+        }
+    }
