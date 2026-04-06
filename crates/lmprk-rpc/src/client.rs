@@ -65,3 +65,16 @@ impl RpcEndpoint {
         self.consecutive_failures = 0;
         self.backoff = Duration::from_millis(250);
     }
+
+    /// True once an endpoint has failed enough times to be skipped.
+    pub fn is_degraded(&self) -> bool {
+        self.consecutive_failures >= 3
+    }
+}
+
+/// Policy layer that picks the next endpoint to use.
+#[derive(Debug, Clone)]
+pub struct RpcClient {
+    endpoints: Vec<RpcEndpoint>,
+    cursor: usize,
+}
