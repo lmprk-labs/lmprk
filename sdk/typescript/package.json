@@ -1,0 +1,39 @@
+{
+  "name": "@lmprk/sdk",
+  "version": "0.5.0",
+  "description": "TypeScript SDK for the Lmprk Solana light client",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "lint": "tsc --noEmit"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lmprk-labs/lmprk"
+  },
+  "homepage": "https://lmprk.fun",
+  "keywords": [
+    "solana",
+    "light-client",
+    "zk",
+    "lmprk"
+  ],
+  "dependencies": {
+    "bn.js": "^5.2.1",
+    "bs58": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/bn.js": "^5.1.5",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.30",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.4.2"
+  }
+}
