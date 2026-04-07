@@ -110,3 +110,45 @@ impl RpcClient {
         Err(RpcError::AllEndpointsExhausted)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn ep(label: &str) -> RpcEndpoint {
+        RpcEndpoint::new(format!("https://{}.example", label), label)
+    }
+
+    #[test]
+    fn pick_rotates_through_endpoints() {
+        let mut client = RpcClient::new(vec![ep("a"), ep("b"), ep("c")]);
+        let mut seen = Vec::new();
+        for _ in 0..3 {
+            let label = client.pick().expect("has endpoint").label.clone();
+            seen.push(label);
+        }
+        seen.sort();
+        assert_eq!(seen, vec!["a", "b", "c"]);
+    }
+
+    #[test]
+    fn degraded_endpoint_is_skipped() {
+        let mut client = RpcClient::new(vec![ep("a"), ep("b")]);
+        for _ in 0..3 {
+            client.endpoints[0].note_failure();
+        }
+        assert!(client.endpoints[0].is_degraded());
+        let next = client.pick().expect("picks");
+        assert_eq!(next.label, "b");
+    }
+
+    #[test]
+    fn note_success_resets_backoff() {
+        let mut e = ep("a");
+        e.note_failure();
+        e.note_failure();
+        assert!(e.backoff > Duration::from_millis(250));
+        e.note_success();
+        assert_eq!(e.backoff, Duration::from_millis(250));
+    }
+}
