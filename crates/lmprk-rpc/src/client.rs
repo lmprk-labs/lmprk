@@ -89,3 +89,24 @@ impl RpcClient {
     pub fn len(&self) -> usize {
         self.endpoints.len()
     }
+
+    /// True if there are no endpoints.
+    pub fn is_empty(&self) -> bool {
+        self.endpoints.is_empty()
+    }
+
+    /// Pick the next healthy endpoint, skipping degraded ones.
+    pub fn pick(&mut self) -> Result<&mut RpcEndpoint, RpcError> {
+        if self.endpoints.is_empty() {
+            return Err(RpcError::AllEndpointsExhausted);
+        }
+        for _ in 0..self.endpoints.len() {
+            let idx = self.cursor % self.endpoints.len();
+            self.cursor = self.cursor.wrapping_add(1);
+            if !self.endpoints[idx].is_degraded() {
+                return Ok(&mut self.endpoints[idx]);
+            }
+        }
+        Err(RpcError::AllEndpointsExhausted)
+    }
+}
