@@ -16,3 +16,15 @@ export function foldStep(acc: Uint8Array, step: MerkleStep): Uint8Array {
   }
   return hashNode(acc, sib);
 }
+
+export function computeRoot(path: MerklePath, leaf: Uint8Array): Uint8Array {
+  let acc = leaf;
+  for (const step of path.steps) {
+    acc = foldStep(acc, step);
+  }
+  return acc;
+}
+
+export function proofByteSize(proof: StateProof): number {
+  return 8 + 96 + proof.accountData.length / 2 + proof.path.steps.length * 33;
+}
