@@ -9,3 +9,11 @@ Lmprk is a small Solana light client. It carries three concerns:
 
 Together those three steps let a client prove that an account had a given value
 at a given slot without trusting any single RPC.
+
+## Crates
+
+- `lmprk-core`     proof primitives: hashing, merkle paths, snapshots, state
+  proofs, builder.
+- `lmprk-verifier` signature aggregation, threshold check, commitment helper.
+- `lmprk-rpc`      failover-aware RPC client policy used by the host service.
+- `sdk/typescript` a TypeScript mirror of the core types and the verify path.
