@@ -30,3 +30,9 @@ flowchart LR
     F --> G[client verify]
     G --> H[verified result]
 ```
+
+## Protocol versioning
+
+Every proof carries a `protocol` tag and a `version`. The current values are
+`lmprk/v1` and `1`. The verifier refuses anything else, so rolling upgrades
+require both producer and consumer to ship a new release at the same time.
