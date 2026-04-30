@@ -40,3 +40,9 @@ require both producer and consumer to ship a new release at the same time.
 ## Domain separation
 
 Hashing is blake3 with explicit domain tags:
+
+- `lmprk:leaf:v1` for leaves
+- `lmprk:node:v1` for inner nodes
+- `lmprk:verifier:v1` for the slot/state-root commitment
+
+Domain separators are part of the protocol; changing them is a breaking change.
