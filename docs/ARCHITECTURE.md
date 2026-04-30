@@ -17,3 +17,16 @@ at a given slot without trusting any single RPC.
 - `lmprk-verifier` signature aggregation, threshold check, commitment helper.
 - `lmprk-rpc`      failover-aware RPC client policy used by the host service.
 - `sdk/typescript` a TypeScript mirror of the core types and the verify path.
+
+## Data flow
+
+```mermaid
+flowchart LR
+    A[wallet or dApp] --> B[host backend]
+    B --> C[lmprk-rpc<br/>pick endpoint]
+    C --> D[Solana RPC<br/>account + signatures]
+    D --> E[lmprk-core<br/>build StateProof]
+    E --> F[lmprk-verifier<br/>aggregate threshold]
+    F --> G[client verify]
+    G --> H[verified result]
+```
