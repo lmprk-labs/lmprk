@@ -46,3 +46,16 @@ Hashing is blake3 with explicit domain tags:
 - `lmprk:verifier:v1` for the slot/state-root commitment
 
 Domain separators are part of the protocol; changing them is a breaking change.
+
+## Performance notes
+
+The verifier reuses the same blake3 hasher across all path steps, which keeps
+allocation per-step at zero. The merkle path length is bounded by 32 in the
+default configuration, putting the worst-case verifier cost at roughly 32
+blake3 compressions plus one signature batch.
+
+## Failure modes
+
+When the verifier returns an error the host backend decides whether the proof
+is recoverable. The `LmprkError` enum maps every failure to a specific variant
+so callers can branch without inspecting strings.
