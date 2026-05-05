@@ -22,3 +22,9 @@ If any step fails the verifier returns the corresponding `LmprkError` variant
 without trying the later steps.
 
 ## Wire encoding
+
+Both Rust and TypeScript use serde-compatible JSON encoding for portability.
+Binary callers can swap to `bincode` without changing the struct layout; every
+field uses standard `serde` derives.
+
+## Size
