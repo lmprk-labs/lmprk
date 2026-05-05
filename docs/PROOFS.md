@@ -17,3 +17,8 @@ The verifier runs the checks in a fixed order to keep error messages stable:
 1. `protocol` and `version` must match the consumer's expectations.
 2. `snapshot.signer_count` must meet `snapshot.threshold`.
 3. The merkle path must reproduce `snapshot.state_root` from the account leaf.
+
+If any step fails the verifier returns the corresponding `LmprkError` variant
+without trying the later steps.
+
+## Wire encoding
