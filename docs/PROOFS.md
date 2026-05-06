@@ -28,3 +28,13 @@ Binary callers can swap to `bincode` without changing the struct layout; every
 field uses standard `serde` derives.
 
 ## Size
+
+A typical proof is dominated by the account data and the merkle path. The
+`StateProof::byte_size` helper returns an upper bound estimate:
+
+```
+8           protocol header
+96          snapshot (slot + roots + sizes)
+len(data)
+len(path) * 33
+```
