@@ -38,3 +38,12 @@ A typical proof is dominated by the account data and the merkle path. The
 len(data)
 len(path) * 33
 ```
+
+For a 200-byte account on a 16-deep tree the estimate is roughly 832 bytes.
+
+## Replay safety
+
+The verifier never trusts the snapshot's signer count by itself. Callers are
+expected to provide a separate `AggregateProof` covering the snapshot's
+commitment so the threshold check is genuinely cryptographic and not a numeric
+field a malicious host could fabricate.
