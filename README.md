@@ -1,3 +1,5 @@
-# Lmprk
+<p align="center">
+  <img src="assets/banner.png" alt="Lmprk banner" width="100%"/>
+</p>
 
-Solana light client. Verify any account without trusting an RPC.
+<h1 align="center">Lmprk</h1>
