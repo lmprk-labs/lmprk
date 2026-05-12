@@ -32,3 +32,7 @@ protocol.
 
 The name comes from a coastal lighthouse: the keeper does not track every
 ship. The keeper sends the light. The ships verify their own position.
+
+One light. All ships verified.
+
+## How it works
