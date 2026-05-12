@@ -36,3 +36,15 @@ ship. The keeper sends the light. The ships verify their own position.
 One light. All ships verified.
 
 ## How it works
+
+```mermaid
+flowchart LR
+    A[client] -->|address, slot| B[host backend]
+    B -->|RPC pick| C[lmprk-rpc]
+    C -->|account + sigs| D[lmprk-core]
+    D -->|StateProof| E[lmprk-verifier]
+    E -->|threshold ok| F[client verify]
+    F -->|computed root| G[verified]
+```
+
+The building blocks:
