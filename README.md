@@ -22,3 +22,13 @@
 ---
 
 ## What is Lmprk
+
+Lmprk is a Solana light client. It lets a mobile wallet, a dApp, or an
+embedded client verify on-chain account state by checking an Ed25519
+signature aggregation over the slot state root, then walking a blake3
+merkle inclusion path to the account leaf. The client does not have to
+trust the RPC that served the proof; only the validator set and the
+protocol.
+
+The name comes from a coastal lighthouse: the keeper does not track every
+ship. The keeper sends the light. The ships verify their own position.
