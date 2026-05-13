@@ -57,3 +57,14 @@ The building blocks:
 | `sdk/typescript` | a TypeScript mirror of the core types and the verify path |
 
 ## Features
+
+- Ed25519 signature aggregation with a configurable threshold.
+- Blake3 merkle inclusion proofs with explicit domain separation
+  (`lmprk:leaf:v1`, `lmprk:node:v1`).
+- Slot snapshots with windowed validity and supermajority finalization.
+- Failover-aware RPC client policy with exponential backoff.
+- TypeScript SDK with the same proof format, ready for browser and node.
+- Domain-tagged commitments so producers and consumers cannot accidentally
+  collide on a different schema.
+
+## Installation
