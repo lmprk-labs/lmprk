@@ -68,3 +68,13 @@ The building blocks:
   collide on a different schema.
 
 ## Installation
+
+Lmprk is currently distributed as source. Clone the repository and use the
+crates as path dependencies, or vendor the TypeScript SDK directly.
+
+```bash
+git clone https://github.com/lmprk-labs/lmprk.git
+cd lmprk
+./scripts/build.sh
+./scripts/test.sh
+```
