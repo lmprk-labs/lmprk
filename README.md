@@ -48,3 +48,12 @@ flowchart LR
 ```
 
 The building blocks:
+
+| Crate | Role |
+|-------|------|
+| `lmprk-core` | proof primitives: blake3 hashing, merkle paths, slot snapshots, state proof builder |
+| `lmprk-verifier` | Ed25519 signature aggregation, threshold checking, commitment helper |
+| `lmprk-rpc` | failover-aware RPC client policy used by the host service |
+| `sdk/typescript` | a TypeScript mirror of the core types and the verify path |
+
+## Features
