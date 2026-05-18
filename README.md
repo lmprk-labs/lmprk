@@ -78,3 +78,8 @@ cd lmprk
 ./scripts/build.sh
 ./scripts/test.sh
 ```
+
+### Rust
+
+Add `lmprk-core` and `lmprk-verifier` as path dependencies in your
+workspace:
