@@ -83,3 +83,11 @@ cd lmprk
 
 Add `lmprk-core` and `lmprk-verifier` as path dependencies in your
 workspace:
+
+```toml
+[dependencies]
+lmprk-core = { path = "../lmprk/crates/lmprk-core" }
+lmprk-verifier = { path = "../lmprk/crates/lmprk-verifier" }
+```
+
+### TypeScript
