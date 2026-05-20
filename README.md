@@ -91,3 +91,12 @@ lmprk-verifier = { path = "../lmprk/crates/lmprk-verifier" }
 ```
 
 ### TypeScript
+
+Build the SDK locally and link it into your project:
+
+```bash
+cd sdk/typescript
+npm install
+npm run build
+npm link
+```
