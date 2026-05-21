@@ -100,3 +100,9 @@ npm install
 npm run build
 npm link
 ```
+
+Then in your project:
+
+```bash
+npm link @lmprk/sdk
+```
