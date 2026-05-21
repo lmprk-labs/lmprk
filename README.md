@@ -106,3 +106,7 @@ Then in your project:
 ```bash
 npm link @lmprk/sdk
 ```
+
+## Usage
+
+### Rust
