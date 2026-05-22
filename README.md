@@ -132,3 +132,12 @@ let snapshot = SlotSnapshot {
     validator_set_size: 128,
     threshold: 86,
 };
+
+let path = MerklePath { steps: vec![MerkleStep { sibling, side: Side::Right }] };
+
+let proof = StateProofBuilder::new()
+    .snapshot(snapshot)
+    .address("So11111111111111111111111111111111111111112")
+    .account_data(data)
+    .path(path)
+    .build()?;
