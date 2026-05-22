@@ -110,3 +110,12 @@ npm link @lmprk/sdk
 ## Usage
 
 ### Rust
+
+Build and verify a state proof locally:
+
+```rust
+use lmprk_core::hash::Hash;
+use lmprk_core::merkle::Side;
+use lmprk_core::{
+    hash_leaf, hash_node, MerklePath, MerkleStep, SlotInfo, SlotSnapshot, StateProofBuilder,
+};
