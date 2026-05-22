@@ -119,3 +119,16 @@ use lmprk_core::merkle::Side;
 use lmprk_core::{
     hash_leaf, hash_node, MerklePath, MerkleStep, SlotInfo, SlotSnapshot, StateProofBuilder,
 };
+
+let data = b"some-account-data".to_vec();
+let leaf = hash_leaf(&data);
+let sibling = hash_leaf(b"sibling");
+let root = hash_node(&leaf, &sibling);
+
+let snapshot = SlotSnapshot {
+    head: SlotInfo { slot: 1000, blockhash: Hash([0u8; 32]),
+                       parent_slot: 999, signer_count: 100 },
+    state_root: root,
+    validator_set_size: 128,
+    threshold: 86,
+};
