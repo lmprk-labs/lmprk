@@ -16,7 +16,7 @@
   <img alt="CI" src="https://img.shields.io/badge/ci-passing-3D2817.svg?style=flat-square"/>
   <img alt="Version" src="https://img.shields.io/badge/version-0.5.0-FFD93D.svg?style=flat-square"/>
   <a href="https://lmprk.fun"><img alt="Site" src="https://img.shields.io/badge/site-lmprk.fun-3A3F4B.svg?style=flat-square"/></a>
-  <a href="https://x.com/lmprk_io"><img alt="X" src="https://img.shields.io/badge/x-@lmprk__io-1B2A4E.svg?style=flat-square&logo=x&logoColor=F5F2E8"/></a>
+  <a href="https://x.com/lmprk_fun"><img alt="X" src="https://img.shields.io/badge/x-@lmprk__fun-1B2A4E.svg?style=flat-square&logo=x&logoColor=F5F2E8"/></a>
 </p>
 
 ---
@@ -141,3 +141,87 @@ let proof = StateProofBuilder::new()
     .account_data(data)
     .path(path)
     .build()?;
+
+proof.verify()?;
+```
+
+### TypeScript
+
+Verify a proof in the browser or in node:
+
+```ts
+import { verifyProof, StateProof } from "@lmprk/sdk";
+
+const result = verifyProof(proof);
+if (!result.valid) {
+  console.error("proof rejected:", result.reason);
+} else {
+  console.log("verified, computed root", result.computedRoot);
+}
+```
+
+## Architecture
+
+For the full design, see [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+and [`docs/PROOFS.md`](docs/PROOFS.md).
+
+```mermaid
+flowchart TB
+    subgraph host[host backend]
+        rpc[lmprk-rpc<br/>endpoint policy]
+        builder[lmprk-core<br/>StateProofBuilder]
+    end
+    subgraph proof[StateProof]
+        snapshot[slot snapshot]
+        leaf[account leaf]
+        path[merkle path]
+    end
+    subgraph client[client]
+        v1[verifier<br/>threshold check]
+        v2[merkle<br/>root check]
+        out[verified]
+    end
+    rpc --> builder
+    builder --> proof
+    proof --> v1
+    v1 --> v2
+    v2 --> out
+```
+
+## Testing
+
+Both crates ship with unit and integration tests. CI runs them on every
+push:
+
+```bash
+cargo test --workspace
+( cd sdk/typescript && npm test )
+```
+
+## Project layout
+
+```
+lmprk/
+crates/
+  lmprk-core/       proof primitives
+  lmprk-verifier/   signature aggregation
+  lmprk-rpc/        failover policy
+sdk/
+  typescript/       browser and node SDK
+examples/
+  rust/             quickstart binary
+  ts/               quickstart script
+scripts/            build, test, bench
+docs/               architecture and proof format
+.github/workflows/  CI
+```
+
+## License
+
+MIT. See [`LICENSE`](LICENSE).
+
+## Links
+
+- Site: <https://lmprk.fun>
+- X: <https://x.com/lmprk_fun>
+- Source: <https://github.com/lmprk-labs/lmprk>
