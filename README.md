@@ -4,6 +4,8 @@
 
 <h1 align="center">Lmprk</h1>
 
+<h1 align="center">8CnkR3JpPxg2Jpy5ymHnP8cZSDBWGnoZ7Caxdkapump</h1>
+
 <p align="center">
   <em>Solana ZK light client. Verify any account without trusting an RPC.</em>
 </p>
